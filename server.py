@@ -5,12 +5,22 @@ from twilio.twiml.messaging_response import MessagingResponse
 app = Flask(__name__)
 
 
-@app.route('/bot', methods=['POST'])
-def bot():
-    incoming_msg = request.values.get('Body', '').lower()
+@app.route('/default', methods=['POST'])
+def default():
     resp = MessagingResponse()
     msg = resp.message()
-    msg.body("chalo")
+    msg.body("Hey")
+
+    return str(resp)
+
+
+@app.route('/bot', methods=['POST'])
+def bot():
+    # print(request.values)
+    incoming_msg = request.values.get('Body', '').lower()
+    # print(incoming_msg)
+    resp = MessagingResponse()
+    msg = resp.message()
     responded = False
     if 'quote' in incoming_msg:
         # return a quote
@@ -26,9 +36,13 @@ def bot():
         # return a cat pic
         msg.media('https://cataas.com/cat')
         responded = True
+    if 'location' in incoming_msg:
+        msg.persistent_action(['geo:37.787890,-122.391664|375 Beale St'])
+        msg.body('This is one of the Twilio office locations')
+        responded = True
     if not responded:
         msg.body('I only know about famous quotes and cats, sorry!')
-    return "helo"
+    return str(resp)
 
 
 if __name__ == '__main__':

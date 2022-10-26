@@ -13,3 +13,5 @@ firebase_admin.initialize_app(cred, {
 # As an admin, the app has access to read and write all data, regradless of Security Rules
 ref = db.reference('/number')
 print(ref.get())
+
+

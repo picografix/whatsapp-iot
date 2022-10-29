@@ -19,3 +19,13 @@ Proof of concept for Whatsapp-IOT interface
 
  use numpy to perform calculations
  
+
+ Quickstart
+1. `pip install -r requirements.txt`
+2. `ngrok http 4000`
+whatsapp-iot
+
+gcloud services enable --project "whatsapp-iot" "static-maps-backend.googleapis.com"
+gcloud services list --project "whatsapp-iot"
+
+gcloud alpha services api-keys create --project "whatsapp-iot" --display-name "WHATSAPP_GOOGLE"

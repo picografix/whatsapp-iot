@@ -23,4 +23,19 @@ def send_location(number, lat, long, body):
     print(message.sid)
     return True
 
+#  sample code
 send_location("9462447291", "37.787890","-122.391664","Ice cream vendor")
+
+#  A function to get the location from firebase
+def get_location():
+    pass
+
+# A function to sort the locations of nearby vendors
+def nearby_vendors():
+    pass
+
+# A function to list registered vendors
+def registered_vendors():
+    pass
+
+# 

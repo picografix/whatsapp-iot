@@ -19,6 +19,7 @@ class ReadData():
             print(f'{doc.id} => {doc.to_dict()}')
 
     def addData(self, id, desc, latitude, longitude, status):
+        
         doc_ref = self.db.collection('users').document(id)
         doc_ref.set({
             'desc': desc,

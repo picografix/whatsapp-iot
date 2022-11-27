@@ -1,7 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
-
+from firebase_admin import firestore
 # Fetch the service account key JSON file contents
 cred = credentials.Certificate('key.json')
 
@@ -9,9 +9,9 @@ cred = credentials.Certificate('key.json')
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://whatsapp-iot-default-rtdb.firebaseio.com'
 })
-
+db = firestore.client()
 # As an admin, the app has access to read and write all data, regradless of Security Rules
-ref = db.reference('/number')
+ref = db.reference('/iot')
 print(ref.get())
 
 

@@ -66,6 +66,38 @@ class ReadData():
         name_dict = lat.get()
         s = f"{name} \n {name_dict.get('desc')}"
         return s
+    def setRealtimeDatabase(self,name, short_desc, description, latitude, longitude, status, contact_number):
+    
+        data_dict = {
+            'name': f"{name}",
+            'short_desc': f"{short_desc}",
+            'description':f"{description}",
+            'Latitude':f"{latitude}",
+            'Longitude':f"{longitude}",
+            'status':f"{status}",
+            'contact_number':f"{contact_number}"
+        }
+        doc = db.reference('',app=self.vendors)
+        doc = doc.child(f'test/{name}')
+
+
+        doc.set(data_dict)
+
+        return True
+    
+    def updateLocationTest(self, name, latitude, longitude):
+        try:
+            doc = db.reference('',app=self.vendors)
+            doc1 = doc.child(f'test/{name}')
+
+            doc1.update({
+                'Latitude':latitude,
+                'Longitude':longitude,
+            })
+        
+            return True
+        except:
+            return False
 
     def getVendor(self,id,db_id='clients'):
         doc_ref = self.db.collection(db_id).document(id)

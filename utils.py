@@ -1,17 +1,30 @@
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
-from firebase_admin import firestore
-# Fetch the service account key JSON file contents
-cred = credentials.Certificate('key.json')
+"""
+User commands:
+- bot show vendors
+- bot show "id"
+- bot location id
+- bot register id
+- bot nearby vendors
 
-# Initialize the app with a service account, granting admin privileges
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://whatsapp-iot-default-rtdb.firebaseio.com'
-})
-db = firestore.client()
-# As an admin, the app has access to read and write all data, regradless of Security Rules
-ref = db.reference('/iot')
-print(ref.get())
+"""
+
+def extractCommand(msg):
+    # msg = msg.split(" ")
+    if(msg[0]=="bot"):
+        if(msg[1]=="show" and msg[2]=="vendors"):
+            return 1
+        elif(msg[1]=="show"):
+            return 2
+        elif(msg[1]=="location"):
+            return 3
+        elif(msg[1]=="register"):
+            return 4
+        elif(msg[1]=="nearby"):
+            return 5
+        else:
+            return 0
+    else:
+        return 0
 
 
+# print(extractCommand("bot show there"))

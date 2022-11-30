@@ -1,9 +1,13 @@
 from flask import Flask, request
 import requests
 from twilio.twiml.messaging_response import MessagingResponse
-
+# from realtime import getLatLong
+from retrieve import ReadData
+from whatsapp import send_location
+from utils import extractCommand
 app = Flask(__name__)
 
+rd = ReadData()
 
 @app.route('/default', methods=['POST'])
 def default():
@@ -17,31 +21,53 @@ def default():
 @app.route('/bot', methods=['POST'])
 def bot():
     # print(request.values)
+    mobile = request.values.get('WaId');
+    print(mobile)
     incoming_msg = request.values.get('Body', '').lower()
+    inc_msg = incoming_msg.split(" ")
+    j = extractCommand(inc_msg)
+
     # print(incoming_msg)
     resp = MessagingResponse()
     msg = resp.message()
     responded = False
-    if 'quote' in incoming_msg:
-        # return a quote
-        r = requests.get('https://api.quotable.io/random')
-        if r.status_code == 200:
-            data = r.json()
-            quote = f'{data["content"]} ({data["author"]})'
-        else:
-            quote = 'I could not retrieve a quote at this time, sorry.'
-        msg.body(quote)
+
+    if j==1:
+
+        a, desc = rd.listRegisteredVendors()
+        s = ""
+        for i in range(len(a)):
+            x = a[i]
+            y = desc[i]
+            s+= x + ": " + y + "\n"
+        msg.body(s)
         responded = True
-    if 'cat' in incoming_msg:
-        # return a cat pic
-        msg.media('https://cataas.com/cat')
+
+    elif j==2:
+        name = inc_msg[2]
+        s = rd.getRealtimeVendor(name)
+        msg.body(s)
+        responded=True
+
+    elif j==3:
+        name = inc_msg[2]
+        lat,lon = rd.getLatLong(vendor=name)
+        send_location(mobile,lat,lon, body=f"{name}'s location")
+        msg.body('I am currently here')
         responded = True
-    if 'location' in incoming_msg:
-        msg.persistent_action(['geo:37.787890,-122.391664|375 Beale St'])
-        msg.body('This is one of the Twilio office locations')
+    elif j==4:
+        # cde to register vendor in nearby
+        pass
+    elif j==5:
+        # code to show nearby vendors
+        pass
+    elif j==6:
+        msg.body("Please enter correct command")
+        
         responded = True
+
     if not responded:
-        msg.body('I only know about famous quotes and cats, sorry!')
+        msg.body('Write help for showing list of commands')
     return str(resp)
 
 

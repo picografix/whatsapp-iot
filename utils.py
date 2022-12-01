@@ -27,4 +27,12 @@ def extractCommand(msg):
         return 0
 
 
+help_msg = "The bot only works for the following commands \n"
+help_msg+= "1. Bot show vendors: To get a list of vendors \n"
+help_msg+= "2. Bot show vendors_name : To get a detailed description of the vendor \n"
+help_msg+= "3. Bot location vendor_name: Get the current location of the vendor \n"
+help_msg+= "4. Bot register vendor_name: Register vendor for nearby alert \n"
+help_msg+= "5. Bot nearby vendors: To get a list of vendors nearby "
+
+
 # print(extractCommand("bot show there"))

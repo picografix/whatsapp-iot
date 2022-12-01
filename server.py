@@ -5,6 +5,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 from retrieve import ReadData
 from whatsapp import send_location
 from utils import extractCommand
+from utils import help_msg
 app = Flask(__name__)
 
 rd = ReadData()
@@ -63,9 +64,11 @@ def bot():
         pass
     elif j==6:
         msg.body("Please enter correct command")
-        
-        responded = True
 
+        responded = True
+    if "help" in incoming_msg:
+        msg.body(help_msg)
+        responded=True
     if not responded:
         msg.body('Write help for showing list of commands')
     return str(resp)
